@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     'rest_framework',
 
+    'apps.user',
     'apps.trip',
 ]
 
@@ -113,6 +114,11 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+
+# Custom User Model
+
+AUTH_USER_MODEL = 'user.User'
 
 
 # Static files (CSS, JavaScript, Images)
