@@ -22,7 +22,7 @@ DEBUG = False
 
 # Convert comma delimited string of allowed hosts to Python list
 
-ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS', '') if host]
+ALLOWED_HOSTS = [host.strip() for host in os.environ.get('ALLOWED_HOSTS', '').split(',') if host]
 
 
 # Application definition
