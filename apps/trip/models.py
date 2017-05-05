@@ -13,3 +13,6 @@ class Trip(models.Model):
             self.owner = new_owner
         except get_user_model().DoesNotExist:
             pass
+
+    def __str__(self):
+        return self.title

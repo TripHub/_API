@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser, BaseUserManager
+from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class UserManager(BaseUserManager):
@@ -18,20 +18,24 @@ class UserManager(BaseUserManager):
     def create_superuser(self, identifier, password, email=''):
         user = User.objects.create(
             identifier=identifier, email=email)
-        user.is_staff = True
         user.is_superuser = True
+        user.is_staff = True
         user.set_password(password)
         user.save(using=self._db)
         return user
 
 
-class User(AbstractUser):
-    identifier = models.CharField(max_length=128, primary_key=True)
+class User(AbstractBaseUser):
+    identifier = models.CharField(max_length=128, unique=True)
     email = models.EmailField(blank=True)
+    is_superuser = models.BooleanField(default=False)
+    is_staff = models.BooleanField(default=False)
+    is_active = models.BooleanField(default=True)
 
     objects = UserManager()
 
     USERNAME_FIELD = 'identifier'
+    EMAIL_FIELD = 'email'
 
     def get_full_name(self):
         return self.email or self.identifier

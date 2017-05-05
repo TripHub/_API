@@ -22,7 +22,7 @@ from apps.trip.views import TripViewSet
 
 
 router = routers.SimpleRouter()
-router.register('trip', TripViewSet)
+router.register(r'trip', TripViewSet, base_name='trip')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

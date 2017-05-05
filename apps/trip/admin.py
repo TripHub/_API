@@ -1,3 +1,9 @@
 from django.contrib import admin
 
-# Register your models here.
+from .models import Trip
+
+
+class TripAdmin(admin.ModelAdmin):
+    list_display = ('title', 'owner',)
+
+admin.site.register(Trip, TripAdmin)
