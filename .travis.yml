@@ -4,4 +4,4 @@ python:
 
 install: "pip install -r requirements/test.txt"
 
-script: "prospector --uses django"
+script: ""
