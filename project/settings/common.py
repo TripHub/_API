@@ -133,15 +133,22 @@ STATIC_URL = '/static/'
 STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 
+# Authentication config
+# These must be set, otherwise all requests will be rejected by rest_framework
+
+AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
+AUTH0_API_AUDIENCE = os.environ.get('AUTH0_API_AUDIENCE')
+
+
 # REST Framework
 
 # Use Django's standard `django.contrib.auth` permissions,
 # or allow read-only access for unauthenticated users.
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'common.rest_framework.authentication.auth0.Auth0Authentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication'
-    )
 }
