@@ -152,10 +152,18 @@ AUTH0_API_AUDIENCE = os.environ.get('AUTH0_API_AUDIENCE')
 # Use Django's standard `django.contrib.auth` permissions,
 # or allow read-only access for unauthenticated users.
 REST_FRAMEWORK = {
+    # Authentication
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'common.rest_framework.authentication.auth0.Auth0Authentication',
     ),
+
+    # Permissions
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
+
+    # Pagination
+    'DEFAULT_PAGINATION_CLASS':
+        'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 42
 }

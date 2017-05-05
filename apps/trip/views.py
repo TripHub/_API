@@ -12,10 +12,10 @@ class TripViewSet(viewsets.ModelViewSet):
     serializer_class = TripSerializer
 
     def get_queryset(self):
-        print('user', self.request.user)
         return Trip.objects.filter(owner=self.request.user)
 
     def create(self, request, *args, **kwargs):
+        """Creates a trip, setting the owner as the requester."""
         title = request.data.get('title')
         if not title:
             title = 'Unnamed trip'
