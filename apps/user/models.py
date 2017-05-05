@@ -1,10 +1,11 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 
 class UserManager(BaseUserManager):
     def raise_no_identifier_error(self):
-        raise ValueError('users must have an identifier')
+        raise ValueError('Users must have an identifier')
 
     def create_user(self, identifier):
         if not identifier:
@@ -16,6 +17,8 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, identifier, password, email=''):
+        if User.objects.filter(email=email).exists():
+            raise ValidationError('User with email already exists')
         user = User.objects.create(
             identifier=identifier, email=email)
         user.is_superuser = True
@@ -27,7 +30,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser):
     identifier = models.CharField(max_length=128, unique=True)
-    email = models.EmailField(blank=True)
+    email = models.EmailField(blank=True, unique=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -36,6 +39,7 @@ class User(AbstractBaseUser):
 
     USERNAME_FIELD = 'identifier'
     EMAIL_FIELD = 'email'
+    REQUIRED_FIELDS = ['email']
 
     def get_full_name(self):
         return self.email or self.identifier
