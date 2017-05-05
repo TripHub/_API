@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
+    'corsheaders',
     'rest_framework',
 
     'apps.user',
@@ -46,6 +47,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -167,3 +169,14 @@ REST_FRAMEWORK = {
         'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE': 42
 }
+
+
+# CORS Headers
+
+# This adds the appropriate CORS headers to our responses so the API can
+# be requested from different domains.
+
+CORS_ORIGIN_WHITELIST = (
+    'triphub-app.herokuapp.com',
+    'localhost:3000',
+)

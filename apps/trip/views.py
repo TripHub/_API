@@ -2,14 +2,14 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 
 from .models import Trip
-from .serializers import TripSerializer
+from .serializers import TripSerializerSimple
 
 
 class TripViewSet(viewsets.ModelViewSet):
     """
     ViewSet for listing trips.
     """
-    serializer_class = TripSerializer
+    serializer_class = TripSerializerSimple
 
     def get_queryset(self):
         return Trip.objects.filter(owner=self.request.user)
@@ -20,5 +20,5 @@ class TripViewSet(viewsets.ModelViewSet):
         if not title:
             title = 'Unnamed trip'
         trip = Trip.objects.create(owner=self.request.user, title=title)
-        serializer = TripSerializer(trip)
+        serializer = TripSerializerSimple(trip)
         return Response(serializer.data, status=201)
