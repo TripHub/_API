@@ -7,7 +7,7 @@ from .serializers import TripSerializerSimple
 
 class TripViewSet(viewsets.ModelViewSet):
     """
-    ViewSet for listing trips.
+    ViewSet for listing, retrieving, creating, updating and deleting trips.
     """
     serializer_class = TripSerializerSimple
 
