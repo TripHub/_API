@@ -3,7 +3,7 @@ import dj_database_url
 from .common import *
 
 
-INSTALLED_APPS += ['gunicorn']
+INSTALLED_APPS += ['gunicorn', 'raven.contrib.django.raven_compat']
 
 
 # SECURITY WARNING: keep the secret key used in production secret!

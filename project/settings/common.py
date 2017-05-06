@@ -39,7 +39,6 @@ INSTALLED_APPS = [
     'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
 
-    'raven.contrib.django.raven_compat',
     'corsheaders',
     'rest_framework',
 
