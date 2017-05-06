@@ -2,3 +2,4 @@
 # production that aren't in development.
 
 -r common.txt
+raven==6.0.0
