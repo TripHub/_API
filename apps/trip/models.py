@@ -6,8 +6,10 @@ from common.models.utils import TimeStampedModel
 
 
 class Trip(TimeStampedModel):
-    owner = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
-    members = models.ManyToManyField(settings.AUTH_USER_MODEL)
+    owner = models.ForeignKey(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    members = models.ManyToManyField(
+        settings.AUTH_USER_MODEL, related_name='members')
     title = models.CharField(blank=True, max_length=255)
 
     def transfer_ownership(self, user):
