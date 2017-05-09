@@ -6,7 +6,7 @@ from string import ascii_letters
 from random import choice
 
 
-def generate_model_uid(model=None, length=42):
+def generate_model_prefixed_id(model=None, length=42):
     """produces a random model-prefixed string 42 characters long."""
     if not model:
         raise ValueError('Model not specified')
