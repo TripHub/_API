@@ -1,5 +1,7 @@
 # TripHub API
 
+[![Build Status](https://travis-ci.org/TripHub/API.svg?branch=master)](https://travis-ci.org/TripHub/API)
+
 🛠 *This project is in the early stages of development*
 
 **Welcome to TripHub, a unified place for groups to organise trips!**
