@@ -16,13 +16,13 @@ class Migration(migrations.Migration):
         migrations.AddField(
             model_name='destination',
             name='uid',
-            field=models.CharField(default='ehehfeh', editable=False, max_length=42, unique=True),
+            field=models.CharField(editable=False, max_length=42, unique=True),
             preserve_default=False,
         ),
         migrations.AddField(
             model_name='trip',
             name='uid',
-            field=models.CharField(default='khkhkkgkf', editable=False, max_length=42, unique=True),
+            field=models.CharField(editable=False, max_length=42, unique=True),
             preserve_default=False,
         ),
         migrations.AlterField(
