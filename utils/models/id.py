@@ -7,7 +7,7 @@ from random import choice
 
 
 def generate_model_prefixed_id(model=None, length=42):
-    """produces a random model-prefixed string 42 characters long."""
+    """produces a random model-prefixed string `length` characters long."""
     if not model:
         raise ValueError('Model not specified')
     name = model.__class__.__name__.lower()[:4]
