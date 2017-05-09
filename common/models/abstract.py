@@ -4,7 +4,7 @@ Model utils, intended for inheritance.
 
 from django.db import models
 
-from .utils import generate_model_uid
+from utils.models.id import generate_model_uid
 
 
 class TimeStampedModel(models.Model):
@@ -16,6 +16,12 @@ class TimeStampedModel(models.Model):
 
 
 class PublicIdModel(models.Model):
+    """
+    The UID field is a candidate field, but not a primary key field (for db 
+    performance reasons). It's purpose is to enable external users to identify
+    a specific entity without publicly exposing an the numerical ID (which can
+    be easily iterated/looped over to try and access neighbouring resources).
+    """
     class Meta:
         abstract = True
 

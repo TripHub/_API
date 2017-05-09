@@ -1,3 +1,7 @@
+"""
+Utility functions for identity fields on models.
+"""
+
 from string import ascii_letters
 from random import choice
 
