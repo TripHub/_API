@@ -12,4 +12,4 @@ class TripSerializer(serializers.ModelSerializer):
 class TripSerializerSimple(serializers.ModelSerializer):
     class Meta:
         model = Trip
-        fields = ('id', 'title', 'owner',)
+        fields = ('uid', 'title', 'owner',)

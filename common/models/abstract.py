@@ -4,7 +4,7 @@ Model utils, intended for inheritance.
 
 from django.db import models
 
-from .utils import generate_uid
+from .utils import generate_model_uid
 
 
 class TimeStampedModel(models.Model):
@@ -20,7 +20,9 @@ class PublicIdModel(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        self.uid = generate_uid(self)
+        # since we need `self` we can't use the default param, so we add the
+        # uid on save instead
+        self.uid = generate_model_uid(self, length=42)
         return super().save(*args, **kwargs)
 
     uid = models.CharField(
