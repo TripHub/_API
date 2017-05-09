@@ -4,7 +4,7 @@ from .models import Trip, Destination
 
 
 class TripAdmin(admin.ModelAdmin):
-    list_display = ('uid', 'title', 'owner', 'created',)
+    list_display = ('title', 'owner', 'created',)
 
 
 class DestinationAdmin(admin.ModelAdmin):
