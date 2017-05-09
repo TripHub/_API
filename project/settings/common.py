@@ -152,6 +152,8 @@ STATICFILES_STORAGE = 'whitenoise.django.GzipManifestStaticFilesStorage'
 
 AUTH0_DOMAIN = os.environ.get('AUTH0_DOMAIN')
 AUTH0_API_AUDIENCE = os.environ.get('AUTH0_API_AUDIENCE')
+AUTH0_API_CLIENT_ID = os.environ.get('AUTH0_API_CLIENT_ID')
+AUTH0_API_CLIENT_SECRET = os.environ.get('AUTH0_API_CLIENT_SECRET')
 
 
 # REST Framework

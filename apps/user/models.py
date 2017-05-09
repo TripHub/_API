@@ -2,7 +2,7 @@ from django.db import models
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
-from common.models.utils import TimeStampedModel
+from common.models.abstract import TimeStampedModel, PublicIdModel
 
 
 class UserManager(BaseUserManager):
@@ -30,7 +30,7 @@ class UserManager(BaseUserManager):
         return user
 
 
-class User(AbstractBaseUser, TimeStampedModel):
+class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
     identifier = models.CharField(max_length=128, unique=True)
     email = models.EmailField(blank=True, unique=True)
     is_superuser = models.BooleanField(default=False)
