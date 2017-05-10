@@ -10,6 +10,7 @@ class TripViewSet(viewsets.ModelViewSet):
     ViewSet for listing, retrieving, creating, updating and deleting trips.
     """
     serializer_class = TripSerializerSimple
+    lookup_field = 'uid'
 
     def get_queryset(self):
         return Trip.objects.filter(owner=self.request.user)
