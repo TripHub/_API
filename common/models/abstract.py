@@ -28,8 +28,8 @@ class PublicIdModel(models.Model):
     def save(self, *args, **kwargs):
         # since we need `self` we can't use the default param, so we add the
         # uid on save instead
-        self.uid = generate_model_prefixed_id(self, length=42)
+        self.uid = generate_model_prefixed_id(self, length=32)
         return super().save(*args, **kwargs)
 
     uid = models.CharField(
-        unique=True, editable=False, max_length=42)
+        unique=True, editable=False, max_length=32)
