@@ -12,6 +12,9 @@ class Trip(TimeStampedModel, PublicIdModel):
         settings.AUTH_USER_MODEL, related_name='members', blank=True)
     title = models.CharField(blank=True, max_length=255)
 
+    def get_destinations(self):
+        return self.destination_set.all()
+
     def transfer_ownership(self, user):
         try:
             # check the new owner is an active user
