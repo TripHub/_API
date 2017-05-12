@@ -1,9 +1,9 @@
-from rest_framework import serializers
+from common.rest_framework.serializers.abstract import PublicIdBaseSerializer
 
 from .models import User
 
 
-class UserSerializer(serializers.ModelSerializer):
+class UserSerializer(PublicIdBaseSerializer):
     class Meta:
         model = User
-        fields = ('uid',)
+        exclude = ('uid',)
