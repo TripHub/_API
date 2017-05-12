@@ -21,7 +21,7 @@ from rest_framework import routers
 from apps.trip.views import TripViewSet
 
 
-router = routers.SimpleRouter(trailing_slash=False)
+router = routers.SimpleRouter()
 router.register(r'trip', TripViewSet, base_name='trip')
 
 urlpatterns = [

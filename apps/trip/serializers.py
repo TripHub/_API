@@ -1,23 +1,24 @@
 from rest_framework import serializers
 
+from common.rest_framework.serializers.abstract import PublicIdBaseSerializer
 from apps.destination.serializers import DestinationSerializerSimple
 
 from .models import Trip
 
 
-class TripSerializer(serializers.ModelSerializer):
+class TripSerializer(PublicIdBaseSerializer):
     owner = serializers.CharField(source='owner.uid')
     destinations = DestinationSerializerSimple(
         source='get_destinations', many=True)
 
     class Meta:
         model = Trip
-        exclude = ('id',)
+        exclude = ('uid',)
 
 
-class TripSerializerSimple(serializers.ModelSerializer):
+class TripSerializerSimple(PublicIdBaseSerializer):
     owner = serializers.CharField(source='owner.uid')
 
     class Meta:
         model = Trip
-        fields = ('uid', 'title', 'owner',)
+        fields = ('id', 'title', 'owner',)
