@@ -1,17 +1,19 @@
 from rest_framework import serializers
 
+from common.rest_framework.serializers.abstract import PublicIdBaseSerializer
+
 from .models import Destination
 
 
-class DestinationSerializer(serializers.ModelSerializer):
+class DestinationSerializer(PublicIdBaseSerializer):
     trip = serializers.CharField(source='trip.uid')
 
     class Meta:
         model = Destination
-        exclude = ('id',)
+        exclude = ('uid',)
 
 
-class DestinationSerializerSimple(serializers.ModelSerializer):
+class DestinationSerializerSimple(PublicIdBaseSerializer):
     class Meta:
         model = Destination
-        fields = ('uid', 'title', 'latitude', 'longitude', '_order',)
+        fields = ('id', 'title', 'latitude', 'longitude', '_order',)
