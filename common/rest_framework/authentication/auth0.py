@@ -19,13 +19,19 @@ class Auth0Authentication(authentication.BaseAuthentication):
             issuer = 'https://' + settings.AUTH0_DOMAIN + '/'
             web_key_url = "https://" + settings.AUTH0_DOMAIN + "/.well-known/jwks.json"
             payload = validate_access_token(
-                token=access_token, web_key_url=web_key_url, audience=settings.AUTH0_API_AUDIENCE, issuer=issuer)
-            # get the user identifier from the token and get the associated user object.
+                token=access_token,
+                web_key_url=web_key_url,
+                audience=settings.AUTH0_API_AUDIENCE,
+                issuer=issuer)
+            # get the user identifier from the token and get the associated
+            # user object.
             sub = payload.get('sub')
             user = get_user_model().objects.get(identifier=sub)
         except jwt.JWTError as e:
             raise exceptions.AuthenticationFailed(e.__str__())
         except get_user_model().DoesNotExist:
-            raise exceptions.AuthenticationFailed('User does not exist')
+            # create a new user
+            new_user = get_user_model().objects.create(identifier=sub)
+            return new_user, None
 
         return user, None

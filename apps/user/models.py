@@ -32,7 +32,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
     identifier = models.CharField(max_length=128, unique=True)
-    email = models.EmailField(blank=True, unique=True)
+    email = models.EmailField(blank=True, null=True, unique=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)
@@ -54,6 +54,17 @@ class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
 
     def has_module_perms(self, app_label):
         return True
+
+    def save(self, *args, **kwargs):
+        if self.email:
+            # normalise the email (if provided)
+            self.email = self.email.lower().strip()
+        else:
+            # if the email address is empty then we set it to None, which
+            # ignores it during duplication checking.
+            self.email = None
+        print('EMAIL', self.email)
+        super(User, self).save(*args, **kwargs)
 
     def __str__(self):
         return self.email or self.identifier
