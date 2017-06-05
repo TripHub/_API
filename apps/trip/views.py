@@ -37,9 +37,13 @@ class TripViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def destroy(self, request, *args, **kwargs):
-        queryset = self.get_queryset().filter(owner=self.request.user)
         try:
-            queryset.get(uid=kwargs.get('uid'))
-            return super(TripViewSet, self).destroy(request, *args, **kwargs)
+            # check trip exists
+            trip_to_delete = self.get_queryset().get(uid=kwargs.get('uid'))
+            # check user owns trip
+            if trip_to_delete.owner == self.request.user:
+                return super().destroy(request, *args, **kwargs)
+            else:
+                return Response(status=status.HTTP_403_FORBIDDEN)
         except Trip.DoesNotExist:
             return Response(status=status.HTTP_404_NOT_FOUND)
