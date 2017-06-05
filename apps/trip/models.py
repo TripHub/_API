@@ -18,7 +18,7 @@ class Trip(TimeStampedModel, PublicIdModel):
     def transfer_ownership(self, user):
         try:
             # check the new owner is an active user
-            new_owner = get_user_model().objects.filter(is_active=True)\
+            new_owner = get_user_model().objects.filter(is_active=True) \
                 .get(pk=user.pk)
             self.owner = new_owner
         except get_user_model().DoesNotExist:
