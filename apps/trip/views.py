@@ -39,11 +39,15 @@ class TripViewSet(viewsets.ModelViewSet):
     def destroy(self, request, *args, **kwargs):
         try:
             # check trip exists
-            trip_to_delete = self.get_queryset().get(uid=kwargs.get('uid'))
-            # check user owns trip
+            trip_to_delete = self.get_queryset().get(
+                uid=kwargs.get('uid'))
+            # only delete if the user is the owner
             if trip_to_delete.owner == self.request.user:
+                # is owner: delete
                 return super().destroy(request, *args, **kwargs)
             else:
+                # not owner: forbidden
                 return Response(status=status.HTTP_403_FORBIDDEN)
         except Trip.DoesNotExist:
+            # trip is not in the user's scope: not found
             return Response(status=status.HTTP_404_NOT_FOUND)
