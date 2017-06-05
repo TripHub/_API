@@ -20,9 +20,9 @@ class TripSerializer(PublicIdBaseSerializer):
 
 class TripSerializerSimple(PublicIdBaseSerializer):
     owner = serializers.CharField(source='owner.uid')
-    members_count = serializers.SerializerMethodField()
+    member_count = serializers.SerializerMethodField()
 
-    def get_members_count(self, obj):
+    def get_member_count(self, obj):
         return len(obj.members.all())
 
     class Meta:
