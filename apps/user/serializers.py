@@ -7,3 +7,9 @@ class UserSerializer(PublicIdBaseSerializer):
     class Meta:
         model = User
         exclude = ('uid',)
+
+
+class UserSerializerSimple(PublicIdBaseSerializer):
+    class Meta:
+        model = User
+        fields = ('id',)

@@ -6,5 +6,5 @@ from rest_framework import serializers
 
 
 class PublicIdBaseSerializer(serializers.ModelSerializer):
-    """Swaps the ID in favour of the UID."""
+    """Swaps the value of the ID with the UID for public display."""
     id = serializers.CharField(source='uid')
