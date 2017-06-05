@@ -1,7 +1,7 @@
 from django.db.models import Q
-
 from django.shortcuts import get_object_or_404
 
+from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
 
@@ -31,14 +31,15 @@ class TripViewSet(viewsets.ModelViewSet):
         """Creates a trip, setting the owner as the requester."""
         title = request.data.get('title')
         if not title:
-            title = 'A trip with no name :O'
+            title = 'Untitled Trip'
         trip = Trip.objects.create(owner=self.request.user, title=title)
         serializer = TripSerializerSimple(trip)
-        return Response(serializer.data, status=201)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
-    # def destroy(self, request, *args, **kwargs):
-    #     try:
-    #         # further filter the queryset so users can only delete trips they
-    #         # own.
-    #         trip = self.get_queryset().filter(owner=self.request.user)
-    #     super(TripViewSet, self).destroy(request, *args, **kwargs)
+    def destroy(self, request, *args, **kwargs):
+        queryset = self.get_queryset().filter(owner=self.request.user)
+        try:
+            queryset.get(uid=kwargs.get('uid'))
+            return super(TripViewSet, self).destroy(request, *args, **kwargs)
+        except Trip.DoesNotExist:
+            return Response(status=status.HTTP_404_NOT_FOUND)
