@@ -20,7 +20,7 @@ class TripViewSet(viewsets.ModelViewSet):
         # filter trips to those that the user owns or is a member of
         return Trip.objects.filter(
             Q(owner=self.request.user) | Q(members__in=[self.request.user])
-        )
+        ).order_by('-modified')
 
     def retrieve(self, request, uid=None, *args, **kwargs):
         trip = get_object_or_404(self.get_queryset(), uid=uid)
