@@ -4,6 +4,6 @@ from .models import Trip
 
 
 class TripAdmin(admin.ModelAdmin):
-    list_display = ('title', 'owner', 'created',)
+    list_display = ('title', 'owner', 'uid', 'created',)
 
 admin.site.register(Trip, TripAdmin)
