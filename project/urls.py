@@ -20,12 +20,14 @@ from django.contrib import admin
 from rest_framework import routers
 
 from apps.trip.views import TripViewSet
+from apps.destination.views import DestinationViewSet
 # disable user endpoints until needed
 # from apps.user.views import UserViewSet
 
 
 router = routers.SimpleRouter()
 router.register(r'trip', TripViewSet, base_name='trip')
+router.register(r'destination', DestinationViewSet, base_name='destination')
 
 urlpatterns = [
     url(r'^', include(router.urls)),
