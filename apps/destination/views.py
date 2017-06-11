@@ -17,7 +17,6 @@ class DestinationViewSet(viewsets.ModelViewSet):
 
     def get_queryset(self):
         user_trips = Trip.objects.filter(owner=self.request.user)
-        print(user_trips, Destination.objects.filter(trip__in=user_trips))
         return Destination.objects.filter(trip__in=user_trips)
 
     def create(self, request, *args, **kwargs):
