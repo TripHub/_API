@@ -1,8 +1,8 @@
-import json
-
-from rest_framework import viewsets, status
+from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.decorators import list_route
+from rest_framework.exceptions import PermissionDenied, NotFound, \
+    ValidationError
 
 from apps.trip.models import Trip
 from apps.trip.serializers import TripSerializer
@@ -31,17 +31,12 @@ class DestinationViewSet(viewsets.ModelViewSet):
             trip = Trip.objects.get(uid=trip_uid)
             # Check the requesting user owns the trip
             if trip.owner != request.user:
-                raise PermissionError()
+                raise PermissionDenied(
+                    'Only the trip owner can add destinations.')
             return super().create(request, *args, **kwargs)
         except Trip.DoesNotExist:
-            return Response({
-                'detail': 'Trip {0} does not exist.'.format(
-                    request.data.get('trip'))
-            }, status=status.HTTP_404_NOT_FOUND)
-        except PermissionError:
-            return Response({
-                'detail': 'Only the trip owner can add destinations.'
-            }, status=status.HTTP_403_FORBIDDEN)
+            raise NotFound(
+                'Trip {0} does not exist.'.format(request.data.get('trip')))
 
     @list_route(methods=['POST'])
     def order(self, request):
@@ -59,20 +54,14 @@ class DestinationViewSet(viewsets.ModelViewSet):
             serializer = TripSerializer(trip)
             return Response(serializer.data, status=200)
         except Trip.DoesNotExist:
-            return Response({
-                'detail': 'Trip {0} does not exist.'.format(
-                    request.data.get('trip'))
-            }, status=status.HTTP_404_NOT_FOUND)
+            raise NotFound('Trip {0} does not exist.'.format(
+                request.data.get('trip')))
         except Destination.DoesNotExist:
-            return Response({
-                'detail': 'Destination does not exist.'
-            }, status=status.HTTP_404_NOT_FOUND)
+            raise NotFound('Destination does not exist.')
         except PermissionError:
-            return Response({
-                'detail': 'Only the trip owner can add destinations.'
-            }, status=status.HTTP_403_FORBIDDEN)
+            raise PermissionDenied(
+                'Only the trip owner can add destinations.')
         except ValueError:
-            return Response({
-                'detail': 'All destination ID\'s must be included in the '
-                          '\'order\' parameter.'
-            }, status.HTTP_400_BAD_REQUEST)
+            raise ValidationError(
+                'All destination ID\'s must be included in the \'order\' '
+                'parameter.')

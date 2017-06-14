@@ -20,7 +20,8 @@ class PublicIdModel(models.Model):
     The UID field is a candidate field, but not a primary key field (for db 
     performance reasons). It's purpose is to enable external users to identify
     a specific entity without publicly exposing an the numerical ID (which can
-    be easily iterated/looped over to try and access neighbouring resources).
+    be easily iterated/looped over in an attempt to access sequential
+    resources).
     """
     class Meta:
         abstract = True
