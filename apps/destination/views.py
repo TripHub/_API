@@ -27,7 +27,7 @@ class DestinationViewSet(viewsets.ModelViewSet):
             # is the user the owner
             Q(owner=self.request.user) |
             # is the user a member of the trip
-            Q(members__contains=self.request.user)
+            Q(members__in=[self.request.user])
         )
         return Destination.objects.filter(trip__in=trips)
 

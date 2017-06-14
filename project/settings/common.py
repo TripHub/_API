@@ -162,20 +162,23 @@ AUTH0_API_CLIENT_SECRET = os.environ.get('AUTH0_API_CLIENT_SECRET')
 # Use Django's standard `django.contrib.auth` permissions,
 # or allow read-only access for unauthenticated users.
 REST_FRAMEWORK = {
-    # Authentication
+    # authentication
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'common.rest_framework.authentication.auth0.Auth0Authentication',
     ),
 
-    # Permissions
+    # permissions
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
 
-    # Pagination
+    # pagination
     'DEFAULT_PAGINATION_CLASS':
         'rest_framework.pagination.LimitOffsetPagination',
-    'PAGE_SIZE': 42
+    'PAGE_SIZE': 42,
+
+    # testing
+    'TEST_REQUEST_DEFAULT_FORMAT': 'json'
 }
 
 
