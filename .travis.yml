@@ -4,4 +4,4 @@ python:
 
 install: "pip install -r requirements/test.txt"
 
-script: ""
+script: "python manage.py test apps"
