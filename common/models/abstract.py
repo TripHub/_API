@@ -27,9 +27,10 @@ class PublicIdModel(models.Model):
         abstract = True
 
     def save(self, *args, **kwargs):
-        # since we need `self` we can't use the default param, so we add the
-        # uid on save instead
-        self.uid = generate_model_prefixed_id(self, length=32)
+        if not self.pk:
+            # since we need `self` we can't use the default param, so we add
+            # the uid on save instead
+            self.uid = generate_model_prefixed_id(self, length=32)
         return super().save(*args, **kwargs)
 
     uid = models.CharField(
