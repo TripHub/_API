@@ -22,13 +22,16 @@ class DestinationViewSet(viewsets.ModelViewSet):
     lookup_field = 'uid'
     search_fields = 'trip__uid'
 
-    def get_queryset(self):
-        trips = Trip.objects.filter(
+    def get_trip_queryset(self):
+        return Trip.objects.filter(
             # is the user the owner
             Q(owner=self.request.user) |
             # is the user a member of the trip
             Q(members__in=[self.request.user])
         )
+
+    def get_queryset(self):
+        trips = self.get_trip_queryset()
         return Destination.objects.filter(trip__in=trips)
 
     def create(self, request, *args, **kwargs):
@@ -38,7 +41,7 @@ class DestinationViewSet(viewsets.ModelViewSet):
             raise ValidationError({'trip': 'No trip given.'})
         try:
             # check that the trip is in user's scope
-            trip = self.get_queryset().get(uid=trip_uid)
+            trip = self.get_trip_queryset().get(uid=trip_uid)
             # check the user owns the trip
             if trip.owner != request.user:
                 raise PermissionDenied(

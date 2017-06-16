@@ -187,7 +187,6 @@ REST_FRAMEWORK = {
 # This adds the appropriate CORS headers to our responses so the API can
 # be requested from different domains.
 
-CORS_ORIGIN_WHITELIST = (
+CORS_ORIGIN_WHITELIST = [
     'triphub-app.herokuapp.com',
-    'localhost:3000',
-)
+]
