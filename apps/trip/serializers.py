@@ -28,4 +28,11 @@ class TripSerializerSimple(PublicIdBaseSerializer):
     class Meta:
         model = Trip
         fields = (
-            'id', 'title', 'owner', 'member_count', 'created', 'modified',)
+            'id',
+            'title',
+            'owner',
+            'member_count',
+            'created',
+            'modified',
+            'tag_line',
+        )

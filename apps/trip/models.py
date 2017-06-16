@@ -11,6 +11,7 @@ class Trip(TimeStampedModel, PublicIdModel):
     members = models.ManyToManyField(
         settings.AUTH_USER_MODEL, related_name='members', blank=True)
     title = models.CharField(blank=True, max_length=255)
+    tag_line = models.CharField(blank=True, max_length=255)
 
     def get_destinations(self):
         return self.destination_set.all()
