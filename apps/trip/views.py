@@ -57,14 +57,13 @@ class TripViewSet(viewsets.ModelViewSet):
 
     @detail_route()
     def invite(self, request, *args, **kwargs):
-        print(request.data, args, kwargs)
         email = request.data.get('email')
         if not email:
             raise ValidationError({'email': 'Not provided.'})
         try:
             trip = Trip.objects.get(uid=kwargs.get('uid'))
             _ = Invite.objects.create(trip=trip, email=email)
-            return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except Trip.DoesNotExist:
             raise NotFound(
                 'Trip {0} does not exist.'.format(kwargs.get('uid')))
