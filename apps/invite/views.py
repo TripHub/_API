@@ -20,7 +20,7 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
             Q(trip__owner=self.request.user) |
             Q(trip__members__in=[self.request.user]))
 
-    @detail_route(methods=['POST'])
+    @detail_route()
     def accept(self, request, uid=None):
         try:
             # get the invite

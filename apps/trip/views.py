@@ -56,7 +56,7 @@ class TripViewSet(viewsets.ModelViewSet):
             # trip is not in the user's scope: not found
             return Response(status=status.HTTP_404_NOT_FOUND)
 
-    @detail_route()
+    @detail_route(methods=['POST'])
     def invite(self, request, uid=None):
         email = request.data.get('email').lower().strip()
         if not email:
