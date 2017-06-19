@@ -10,6 +10,11 @@ class Invite(PublicIdModel, TimeStampedModel):
 
     trip = models.ForeignKey(Trip)
     email = models.EmailField(max_length=255)
+    is_active = models.BooleanField(default=True)
+
+    def cancel_request(self):
+        self.is_active = False
+        self.save()
 
     def save(self, *args, **kwargs):
         # normalise email
