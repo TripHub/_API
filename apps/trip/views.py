@@ -4,6 +4,9 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework import viewsets
 from rest_framework.response import Response
+from rest_framework.decorators import detail_route
+from rest_framework.exceptions import ValidationError, NotFound
+from apps.invite.models import Invite
 
 from .models import Trip
 from .serializers import TripSerializer, TripSerializerSimple
@@ -51,3 +54,17 @@ class TripViewSet(viewsets.ModelViewSet):
         except Trip.DoesNotExist:
             # trip is not in the user's scope: not found
             return Response(status=status.HTTP_404_NOT_FOUND)
+
+    @detail_route()
+    def invite(self, request, *args, **kwargs):
+        print(request.data, args, kwargs)
+        email = request.data.get('email')
+        if not email:
+            raise ValidationError({'email': 'Not provided.'})
+        try:
+            trip = Trip.objects.get(uid=kwargs.get('uid'))
+            _ = Invite.objects.create(trip=trip, email=email)
+            return Response(status=status.HTTP_200_OK)
+        except Trip.DoesNotExist:
+            raise NotFound(
+                'Trip {0} does not exist.'.format(kwargs.get('uid')))

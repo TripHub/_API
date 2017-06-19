@@ -38,7 +38,7 @@ class DestinationViewSet(viewsets.ModelViewSet):
         """Check the trip is owned by requesting user, then pass to super."""
         trip_uid = request.data.get('trip')
         if not trip_uid:
-            raise ValidationError({'trip': 'No trip given.'})
+            raise ValidationError({'trip': 'No trip provided.'})
         try:
             # check that the trip is in user's scope
             trip = self.get_trip_queryset().get(uid=trip_uid)
@@ -83,6 +83,5 @@ class DestinationViewSet(viewsets.ModelViewSet):
             raise PermissionDenied(
                 'Only the trip owner can add destinations.')
         except ValueError:
-            raise ValidationError(
-                'All destination ID\'s must be included in the \'order\' '
-                'parameter.')
+            raise ValidationError({
+                'order': 'All destination ID\'s must be included.'})
