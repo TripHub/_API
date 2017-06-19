@@ -5,6 +5,9 @@ from apps.trip.models import Trip
 
 
 class Invite(PublicIdModel, TimeStampedModel):
+    class Meta:
+        unique_together = ('trip', 'email',)
+
     trip = models.ForeignKey(Trip)
     email = models.EmailField(max_length=255)
 

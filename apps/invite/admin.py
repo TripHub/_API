@@ -3,4 +3,8 @@ from django.contrib import admin
 from .models import Invite
 
 
-admin.site.register(Invite)
+class InviteAdmin(admin.ModelAdmin):
+    list_display = ('uid', 'trip', 'email',)
+
+
+admin.site.register(Invite, InviteAdmin)
