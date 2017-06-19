@@ -22,7 +22,8 @@ class TripViewSet(viewsets.ModelViewSet):
     def get_queryset(self):
         # filter trips to those that the user owns or is a member of
         return Trip.objects.filter(
-            Q(owner=self.request.user) | Q(members__in=[self.request.user])
+            Q(owner=self.request.user) |
+            Q(members__in=[self.request.user])
         ).order_by('-modified', 'title')
 
     def retrieve(self, request, uid=None, *args, **kwargs):
@@ -56,14 +57,20 @@ class TripViewSet(viewsets.ModelViewSet):
             return Response(status=status.HTTP_404_NOT_FOUND)
 
     @detail_route()
-    def invite(self, request, *args, **kwargs):
-        email = request.data.get('email')
+    def invite(self, request, uid=None):
+        email = request.data.get('email').lower().strip()
         if not email:
             raise ValidationError({'email': 'Not provided.'})
         try:
-            trip = Trip.objects.get(uid=kwargs.get('uid'))
+            trip = Trip.objects.get(uid=uid)
+            user_previously_invited = Invite.objects.filter(
+                trip=trip, email=email).exists()
+            print('user_previously_invited', user_previously_invited)
+            if user_previously_invited:
+                raise ValidationError(
+                    '{0} has already been invited to \'{1}\'.'.format(
+                        email, trip.title))
             _ = Invite.objects.create(trip=trip, email=email)
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Trip.DoesNotExist:
-            raise NotFound(
-                'Trip {0} does not exist.'.format(kwargs.get('uid')))
+            raise NotFound('Trip \'{0}\' does not exist.'.format(uid))

@@ -21,6 +21,7 @@ from rest_framework import routers
 
 from apps.trip.views import TripViewSet
 from apps.destination.views import DestinationViewSet
+from apps.invite.views import InviteViewSet
 # disable user endpoints until needed
 # from apps.user.views import UserViewSet
 
@@ -28,6 +29,7 @@ from apps.destination.views import DestinationViewSet
 router = routers.SimpleRouter()
 router.register(r'trip', TripViewSet, base_name='trip')
 router.register(r'destination', DestinationViewSet, base_name='destination')
+router.register(r'invite', InviteViewSet, base_name='invite')
 
 urlpatterns = [
     url(r'^', include(router.urls)),

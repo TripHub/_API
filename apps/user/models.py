@@ -63,7 +63,7 @@ class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
             # if the email address is empty then we set it to None, which
             # ignores it during duplication checking.
             self.email = None
-        super(User, self).save(*args, **kwargs)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email or self.identifier

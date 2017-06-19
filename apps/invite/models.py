@@ -11,5 +11,10 @@ class Invite(PublicIdModel, TimeStampedModel):
     trip = models.ForeignKey(Trip)
     email = models.EmailField(max_length=255)
 
+    def save(self, *args, **kwargs):
+        # normalise email
+        self.email = self.email.lower().strip()
+        super().save(*args, **kwargs)
+
     def __str__(self):
         return '<{0}> {1}'.format(self.email, self.trip)
