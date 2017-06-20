@@ -8,6 +8,7 @@ from rest_framework.exceptions import NotFound, PermissionDenied, \
 
 from .models import Invite
 from .serializers import InviteSerializer
+from .constants import PENDING
 
 
 class InviteViewSet(viewsets.ReadOnlyModelViewSet):
@@ -40,7 +41,8 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
     def cancel(self, request, uid=None):
         try:
             # get the pending invite
-            invite = Invite.objects.pending().get(uid=uid)
+            invite = self.get_queryset().filter(status=PENDING).get(uid=uid)
+            # ensure the user is the owner of the invite's trip
             if invite.trip.owner != self.request.user:
                 raise PermissionError(
                     'Only the trip owner can cancel an invite.')
