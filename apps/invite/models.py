@@ -16,9 +16,12 @@ class Invite(PublicIdModel, TimeStampedModel):
         max_length=1, choices=STATUS_CHOICES, default=PENDING)
 
     def cancel(self):
-        """Invalidates the invite so it cannot be accepted."""
-        self.status = CANCELLED
-        self.save()
+        """Invalidates the invite. Throws error if status is not pending."""
+        if self.status == PENDING:
+            self.status = CANCELLED
+            self.save()
+        else:
+            raise PermissionError()
 
     def accept(self):
         """Accepts the invitation. Throws error if status is not pending."""
