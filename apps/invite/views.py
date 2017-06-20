@@ -38,7 +38,7 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
                 raise ValidationError(
                     'User is already a member or owner of the trip.')
             # update the invite status
-            invite.trip.members.add(self.request.user)
+            invite.trip.add_member(self.request.user)
             invite.accept()
             return Response(status=status.HTTP_200_OK)
         except Invite.DoesNotExist:

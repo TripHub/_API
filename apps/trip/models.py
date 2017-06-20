@@ -1,4 +1,5 @@
 from django.db import models
+from django.core.exceptions import ValidationError
 from django.conf import settings
 from django.contrib.auth import get_user_model
 
@@ -17,13 +18,21 @@ class Trip(TimeStampedModel, PublicIdModel):
         return self.destination_set.all()
 
     def transfer_ownership(self, user):
-        try:
-            # check the new owner is an active user
-            new_owner = get_user_model().objects.filter(is_active=True) \
-                .get(pk=user.pk)
-            self.owner = new_owner
-        except get_user_model().DoesNotExist:
-            return False
+        """
+        Updates the owner. Throws User.DoesNotExist if the specified user does
+        not exist or is not active.
+        """
+        new_owner = get_user_model().objects.filter(is_active=True) \
+            .get(pk=user.pk)
+        self.owner = new_owner
+
+    def add_member(self, user):
+        """Adds a new member. Throws if the user is also the owner."""
+        if user is self.owner:
+            raise ValidationError('A trip owner cannot also be a member.')
+        if user in self.members.all():
+            return
+        self.members.add(user)
 
     def __str__(self):
         return self.title
