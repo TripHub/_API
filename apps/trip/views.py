@@ -65,7 +65,6 @@ class TripViewSet(viewsets.ModelViewSet):
             trip = Trip.objects.get(uid=uid)
             user_previously_invited = Invite.objects.filter(
                 trip=trip, email=email).exists()
-            print('user_previously_invited', user_previously_invited)
             if user_previously_invited:
                 raise ValidationError(
                     '{0} has already been invited to {1}.'.format(
