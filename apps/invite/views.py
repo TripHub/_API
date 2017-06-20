@@ -40,7 +40,7 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
     @detail_route()
     def cancel(self, request, uid=None):
         try:
-            # get the pending invite
+            # get the pending invite from the user's scope
             invite = self.get_queryset().filter(status=PENDING).get(uid=uid)
             # ensure the user is the owner of the invite's trip
             if invite.trip.owner != self.request.user:
