@@ -8,6 +8,7 @@ from .constants import STATUS_CHOICES, PENDING, CANCELLED, ACCEPTED, REJECTED
 
 class InviteManager(models.Manager):
     def pending(self):
+        """Returns a queryset containing pending invitations only."""
         return self.get_queryset().filter(status=PENDING)
 
 

@@ -11,7 +11,7 @@ from .serializers import InviteSerializerSimple
 
 
 class InviteViewSet(viewsets.ReadOnlyModelViewSet):
-    """ViewSet for listing, retrieving and accepting invites."""
+    """ViewSet for listing, retrieving, accepting and rejecting invites."""
     serializer_class = InviteSerializerSimple
     lookup_field = 'uid'
 
@@ -26,7 +26,7 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
         try:
             # get the invite
             invite = Invite.objects.pending().get(uid=uid)
-            # check the correct user is attempting to join
+            # check the user is the invite's user
             if invite.email != self.request.user.email:
                 raise PermissionDenied()
             # check the user isn't already involved in the trip
@@ -39,6 +39,18 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
             # update the invite status
             invite.trip.add_member(self.request.user)
             invite.accept()
-            return Response(status=status.HTTP_200_OK)
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Invite.DoesNotExist:
+            raise NotFound()
+
+    @detail_route()
+    def reject(self, request, uid=None):
+        try:
+            invite = Invite.objects.pending().get(uid=uid)
+            # check the user is the invite's user
+            if invite.email != self.request.user.email:
+                raise PermissionDenied()
+            invite.reject()
+            return Response(status=status.HTTP_204_NO_CONTENT)
         except Invite.DoesNotExist:
             raise NotFound()
