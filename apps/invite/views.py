@@ -7,19 +7,24 @@ from rest_framework.exceptions import NotFound, PermissionDenied, \
     ValidationError
 
 from .models import Invite
-from .serializers import InviteSerializerSimple
+from .serializers import InviteSerializer
 
 
 class InviteViewSet(viewsets.ReadOnlyModelViewSet):
     """ViewSet for listing, retrieving, accepting and rejecting invites."""
-    serializer_class = InviteSerializerSimple
+    serializer_class = InviteSerializer
     lookup_field = 'uid'
 
     def get_queryset(self):
         """Gets invites for trips user is involved in."""
-        return Invite.objects.filter(
+        qs = Invite.objects.filter(
             Q(trip__owner=self.request.user) |
             Q(trip__members__in=[self.request.user]))
+        trip_search = self.request.query_params.get('trip')
+        if trip_search:
+            qs = qs.filter(trip__uid=trip_search)
+        print(trip_search, qs)
+        return qs
 
     def validate_user_for_invite(self, invite):
         """
