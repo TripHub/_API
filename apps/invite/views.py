@@ -37,9 +37,22 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
             raise NotFound()
 
     @detail_route()
+    def cancel(self, request, uid=None):
+        try:
+            # get the pending invite
+            invite = Invite.objects.pending().get(uid=uid)
+            if invite.trip.owner != self.request.user:
+                raise PermissionError(
+                    'Only the trip owner can cancel an invite.')
+            invite.cancel()
+            return Response(status=status.HTTP_204_NO_CONTENT)
+        except Invite.DoesNotExist:
+            raise NotFound()
+
+    @detail_route()
     def accept(self, request, uid=None):
         try:
-            # get the invite
+            # get the pending invite
             invite = Invite.objects.pending().get(uid=uid)
             self.validate_user_for_invite(invite)
             # check the user isn't already involved in the trip
@@ -59,6 +72,7 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
     @detail_route()
     def reject(self, request, uid=None):
         try:
+            # get the pending invite
             invite = Invite.objects.pending().get(uid=uid)
             self.validate_user_for_invite(invite)
             invite.reject()
