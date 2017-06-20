@@ -30,7 +30,8 @@ class Trip(TimeStampedModel, PublicIdModel):
         """Adds a new member. Throws if the user is also the owner."""
         if user is self.owner:
             raise ValidationError('A trip owner cannot also be a member.')
-        if user in self.members.all():
+        # check the user is not already a member
+        if self.members.filter(pk=user.pk).exists():
             return
         self.members.add(user)
 
