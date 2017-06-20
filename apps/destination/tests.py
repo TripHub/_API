@@ -14,14 +14,14 @@ class DestinationTest(APITestCase):
         self.client = APIClient()
         self.user_1 = User.objects.create(
             identifier='test0|testtesttesttesttesttest')
-        self.user_2 = User.objects.create(
-            identifier='test1|testtesttesttesttesttest')
         self.user_1_trip = Trip.objects.create(
             title='user1 trip', owner=self.user_1)
+        self.user_2 = User.objects.create(
+            identifier='test1|testtesttesttesttesttest')
         self.user_2_trip = Trip.objects.create(
             title='user2 trip', owner=self.user_2)
 
-    def test_get_destinations_returns_OK(self):
+    def test_get_destinations_returns_ok(self):
         """We should get HTTP 200."""
         self.client.force_authenticate(user=self.user_1)
         response = self.client.get(reverse('destination-list'))

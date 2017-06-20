@@ -21,14 +21,20 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
             Q(trip__owner=self.request.user) |
             Q(trip__members__in=[self.request.user]))
 
+    def validate_user_for_invite(self, invite):
+        """
+        Checks the requesting user is the invite's user.
+        Raises not found if the user does not match.
+        """
+        if invite.email != self.request.user.email:
+            raise NotFound()
+
     @detail_route()
     def accept(self, request, uid=None):
         try:
             # get the invite
             invite = Invite.objects.pending().get(uid=uid)
-            # check the user is the invite's user
-            if invite.email != self.request.user.email:
-                raise PermissionDenied()
+            self.validate_user_for_invite(invite)
             # check the user isn't already involved in the trip
             is_user_owner = invite.trip.owner == self.request.user
             is_user_member = invite.trip.members.filter(
@@ -47,9 +53,7 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
     def reject(self, request, uid=None):
         try:
             invite = Invite.objects.pending().get(uid=uid)
-            # check the user is the invite's user
-            if invite.email != self.request.user.email:
-                raise PermissionDenied()
+            self.validate_user_for_invite(invite)
             invite.reject()
             return Response(status=status.HTTP_204_NO_CONTENT)
         except Invite.DoesNotExist:
