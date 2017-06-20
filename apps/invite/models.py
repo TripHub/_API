@@ -3,6 +3,8 @@ from django.db import models
 from common.models.abstract import PublicIdModel, TimeStampedModel
 from apps.trip.models import Trip
 
+from .constants import STATUS_CHOICES, PENDING, CANCELLED
+
 
 class Invite(PublicIdModel, TimeStampedModel):
     class Meta:
@@ -10,10 +12,11 @@ class Invite(PublicIdModel, TimeStampedModel):
 
     trip = models.ForeignKey(Trip)
     email = models.EmailField(max_length=255)
-    is_active = models.BooleanField(default=True)
+    status = models.CharField(
+        max_length=1, choices=STATUS_CHOICES, default=PENDING)
 
     def cancel_request(self):
-        self.is_active = False
+        self.status = CANCELLED
         self.save()
 
     def save(self, *args, **kwargs):

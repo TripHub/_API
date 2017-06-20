@@ -68,7 +68,7 @@ class TripViewSet(viewsets.ModelViewSet):
             print('user_previously_invited', user_previously_invited)
             if user_previously_invited:
                 raise ValidationError(
-                    '{0} has already been invited to \'{1}\'.'.format(
+                    '{0} has already been invited to {1}.'.format(
                         email, trip.title))
             _ = Invite.objects.create(trip=trip, email=email)
             return Response(status=status.HTTP_204_NO_CONTENT)
