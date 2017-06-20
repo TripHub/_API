@@ -3,7 +3,7 @@ from django.db import models
 from common.models.abstract import PublicIdModel, TimeStampedModel
 from apps.trip.models import Trip
 
-from .constants import STATUS_CHOICES, PENDING, CANCELLED
+from .constants import STATUS_CHOICES, PENDING, CANCELLED, ACCEPTED, REJECTED
 
 
 class Invite(PublicIdModel, TimeStampedModel):
@@ -15,9 +15,26 @@ class Invite(PublicIdModel, TimeStampedModel):
     status = models.CharField(
         max_length=1, choices=STATUS_CHOICES, default=PENDING)
 
-    def cancel_request(self):
+    def cancel(self):
+        """Invalidates the invite so it cannot be accepted."""
         self.status = CANCELLED
         self.save()
+
+    def accept(self):
+        """Accepts the invitation. Throws error if status is not pending."""
+        if self.status == PENDING:
+            self.status = ACCEPTED
+            self.save()
+        else:
+            raise PermissionError()
+
+    def reject(self):
+        """Rejects the invitation.  Throws error if status is not pending."""
+        if self.status == PENDING:
+            self.status = REJECTED
+            self.save()
+        else:
+            raise PermissionError()
 
     def save(self, *args, **kwargs):
         # normalise email

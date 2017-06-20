@@ -26,7 +26,6 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
             # get the invite
             invite = Invite.objects.get(uid=uid)
             # check the correct user is attempting to join
-            print(invite.email, self.request.user.email)
             if invite.email != self.request.user.email:
                 raise PermissionDenied()
             # check the user isn't already involved in the trip
