@@ -7,7 +7,6 @@ from rest_framework.exceptions import NotFound, PermissionDenied, \
     ValidationError
 
 from .models import Invite
-from .constants import PENDING
 from .serializers import InviteSerializerSimple
 
 
@@ -26,7 +25,7 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
     def accept(self, request, uid=None):
         try:
             # get the invite
-            invite = Invite.objects.filter(status=PENDING).get(uid=uid)
+            invite = Invite.objects.pending().get(uid=uid)
             # check the correct user is attempting to join
             if invite.email != self.request.user.email:
                 raise PermissionDenied()

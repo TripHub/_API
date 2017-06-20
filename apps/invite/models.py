@@ -6,6 +6,11 @@ from apps.trip.models import Trip
 from .constants import STATUS_CHOICES, PENDING, CANCELLED, ACCEPTED, REJECTED
 
 
+class InviteManager(models.Manager):
+    def pending(self):
+        return self.get_queryset().filter(status=PENDING)
+
+
 class Invite(PublicIdModel, TimeStampedModel):
     class Meta:
         unique_together = ('trip', 'email',)
@@ -14,6 +19,8 @@ class Invite(PublicIdModel, TimeStampedModel):
     email = models.EmailField(max_length=255)
     status = models.CharField(
         max_length=1, choices=STATUS_CHOICES, default=PENDING)
+
+    objects = InviteManager()
 
     def cancel(self):
         """Invalidates the invite. Throws error if status is not pending."""
