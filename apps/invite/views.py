@@ -1,6 +1,7 @@
 from django.db.models import Q
 
-from rest_framework import viewsets, status
+from rest_framework import viewsets, mixins, status
+from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.decorators import detail_route, list_route
 from rest_framework.exceptions import NotFound, ValidationError
@@ -10,8 +11,23 @@ from .serializers import InviteSerializer
 from .constants import PENDING
 
 
-class InviteViewSet(viewsets.ReadOnlyModelViewSet):
-    """ViewSet for listing, retrieving, accepting and rejecting invites."""
+class InvitePublicViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
+    """
+    ViewSet for non-authenticated access to a invitation.
+    """
+    permission_classes = (AllowAny,)
+    serializer_class = InviteSerializer
+    lookup_field = 'uid'
+
+    def get_queryset(self):
+        # only pending invitations should be visible
+        return Invite.objects.pending()
+
+
+class InviteViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
+    """
+    ViewSet for listing, accepting, rejecting and cancelling invites.
+    """
     serializer_class = InviteSerializer
     lookup_field = 'uid'
 
