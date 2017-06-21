@@ -8,7 +8,8 @@ def send_invitation(sender, instance=None, **kwargs):
         # Message
         'Hey there!\n\n'
         'You have been invited to join {0} on TripHub!\n'
-        'Head over to https://triphub-app.herokuapp.com/invite/{1} to join.'
+        'Head to https://triphub-app.herokuapp.com/invite/{1} to join.\n\n'
+        'Happy tripping 🌍'
         .format(instance.trip.title, instance.uid),
         # From
         'from@triphub.com',

@@ -2,9 +2,8 @@ from django.db.models import Q
 
 from rest_framework import viewsets, status
 from rest_framework.response import Response
-from rest_framework.decorators import detail_route
-from rest_framework.exceptions import NotFound, PermissionDenied, \
-    ValidationError
+from rest_framework.decorators import detail_route, list_route
+from rest_framework.exceptions import NotFound, ValidationError
 
 from .models import Invite
 from .serializers import InviteSerializer
@@ -36,6 +35,21 @@ class InviteViewSet(viewsets.ReadOnlyModelViewSet):
         """
         if invite.email != self.request.user.email:
             raise NotFound()
+
+    @list_route()
+    def pending(self, request):
+        """
+        Returns a list of all pending invitations.
+        """
+        pending_invites = self.get_queryset().filter(status=PENDING)
+
+        page = self.paginate_queryset(pending_invites)
+        if page is not None:
+            serializer = self.get_serializer(page, many=True)
+            return self.get_paginated_response(serializer.data)
+
+        serializer = self.get_serializer(page, many=True)
+        return Response(serializer.data)
 
     @detail_route()
     def cancel(self, request, uid=None):
