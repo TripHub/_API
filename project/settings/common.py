@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 
     'corsheaders',
     'rest_framework',
+    'anymail',
 
     'apps.user',
     'apps.trip',

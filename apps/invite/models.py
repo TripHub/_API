@@ -1,9 +1,11 @@
 from django.db import models
+from django.db.models.signals import post_save
 
 from common.models.abstract import PublicIdModel, TimeStampedModel
 from apps.trip.models import Trip
 
 from .constants import STATUS_CHOICES, PENDING, CANCELLED, ACCEPTED, REJECTED
+from .signals import send_invitation
 
 
 class InviteManager(models.Manager):
@@ -54,3 +56,7 @@ class Invite(PublicIdModel, TimeStampedModel):
 
     def __str__(self):
         return '<{0}> {1}'.format(self.email, self.trip)
+
+
+# send invitation email on save.
+post_save.connect(send_invitation, sender=Invite)
