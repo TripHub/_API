@@ -1,8 +1,11 @@
 from django.db import models
+from django.db.models.signals import pre_save, post_delete
 from django.core.exceptions import ValidationError
 from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 from common.models.abstract import TimeStampedModel, PublicIdModel
+
+from .signals import create_auth0_user, delete_auth0_user
 
 
 class UserManager(BaseUserManager):
@@ -55,14 +58,13 @@ class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
         return True
 
     def save(self, *args, **kwargs):
-        if self.email:
-            # normalise the email (if provided)
-            self.email = self.email.lower().strip()
-        else:
-            # if the email address is empty then we set it to None, which
-            # ignores it during duplication checking.
-            self.email = None
+        # normalise the email (if provided)
+        self.email = self.email.lower().strip()
         super().save(*args, **kwargs)
 
     def __str__(self):
         return self.email or self.identifier
+
+# match Django user's with Auth0 users
+pre_save.connect(create_auth0_user, sender=User)
+post_delete.connect(delete_auth0_user, sender=User)
