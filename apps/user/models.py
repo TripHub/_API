@@ -6,12 +6,9 @@ from common.models.abstract import TimeStampedModel, PublicIdModel
 
 
 class UserManager(BaseUserManager):
-    def raise_no_identifier_error(self):
-        raise ValueError('Users must have an identifier')
-
     def create_user(self, identifier):
         if not identifier:
-            self.raise_no_identifier_error()
+            raise ValueError('Users must have an identifier')
         user = User.objects.create(
             identifier=identifier)
         user.set_unusable_password()
@@ -19,6 +16,8 @@ class UserManager(BaseUserManager):
         return user
 
     def create_superuser(self, identifier, password, email=''):
+        if not identifier:
+            raise ValueError('Users must have an identifier')
         if User.objects.filter(email=email).exists():
             raise ValidationError('User with email already exists')
         user = User.objects.create(
@@ -31,7 +30,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
-    identifier = models.CharField(max_length=128, unique=True)
+    identifier = models.CharField(max_length=128, unique=True, editable=False)
     email = models.EmailField(unique=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
