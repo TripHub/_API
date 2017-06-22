@@ -1,5 +1,3 @@
-import requests
-
 from django.db.models import Q
 
 from rest_framework import viewsets, mixins, status
@@ -11,8 +9,6 @@ from rest_framework.exceptions import NotFound, ValidationError
 from .models import Invite
 from .serializers import InviteSerializer
 from .constants import PENDING
-
-from utils.auth0 import Auth0Auth
 
 
 class InvitePublicViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
