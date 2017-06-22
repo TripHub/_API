@@ -7,8 +7,7 @@ from django.conf import settings
 class Auth0Auth(requests.auth.AuthBase):
     """
     Pass an instance of this class to the auth parameter of a request to
-    authenticate it.
-    Singleton so tokens are retained.
+    authenticate it. Singleton so tokens are retained.
 
     http://docs.python-requests.org/en/master/user/advanced/#custom-authentication
     """
@@ -16,9 +15,9 @@ class Auth0Auth(requests.auth.AuthBase):
 
     def __init__(self):
         if Auth0Auth.instance is None:
-            Auth0Auth.instance = Auth0Auth.Auth0Auth()
+            Auth0Auth.instance = Auth0Auth.__Auth0Auth()
 
-    class Auth0Auth:
+    class __Auth0Auth:
         def __init__(self):
             self.auth0_domain = getattr(
                 settings, 'AUTH0_DOMAIN')

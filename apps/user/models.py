@@ -32,7 +32,7 @@ class UserManager(BaseUserManager):
 
 class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
     identifier = models.CharField(max_length=128, unique=True)
-    email = models.EmailField(blank=True, null=True, unique=True)
+    email = models.EmailField(unique=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
     is_active = models.BooleanField(default=True)

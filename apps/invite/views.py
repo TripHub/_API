@@ -27,12 +27,6 @@ class InvitePublicViewSet(mixins.RetrieveModelMixin, viewsets.GenericViewSet):
         # only pending invitations should be visible
         return Invite.objects.pending()
 
-    @list_route()
-    def test(self, request):
-        response = requests.get(
-            'https://triphub.eu.auth0.com/api/v2/users/facebook|1649842728363424', auth=Auth0Auth())
-        return Response(response.json(), status=200)
-
 
 class InviteViewSet(mixins.ListModelMixin, viewsets.GenericViewSet):
     """

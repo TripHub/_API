@@ -1,15 +1,10 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, mixins
 
-from .models import User
-from .serializers import UserSerializerSimple
+from .serializers import UserSerializer
 
 
-class UserViewSet(viewsets.ReadOnlyModelViewSet):
+class UserViewSet(mixins.CreateModelMixin, viewsets.GenericViewSet):
     """
-    ViewSet for listing and retrieving users.
+    ViewSet for creating users.
     """
-    serializer_class = UserSerializerSimple
-    lookup_field = 'uid'
-
-    def get_queryset(self):
-        return User.objects.filter(is_active=True)
+    serializer_class = UserSerializer
