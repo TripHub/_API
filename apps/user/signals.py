@@ -24,14 +24,14 @@ def create_auth0_user(sender, instance=None, **kwargs):
         raise Exception('Error creating user on Auth0.')
 
     user_id = response.json().get('user_id')
-    instance.identifier = user_id
+    instance.auth0_id = user_id
 
 
 def get_user_email(sender, instance=None, **kwargs):
     """
     Supplements the instance with email from Auth0.
     """
-    url = '{0}/users/{1}'.format(BASE_URL, instance.identifier)
+    url = '{0}/users/{1}'.format(BASE_URL, instance.auth0_id)
     response = requests.get(url=url, auth=Auth0Auth())
     if response.status_code != HTTP_200_OK:
         raise Exception('Error finding user on Auth0.')
@@ -44,7 +44,7 @@ def delete_auth0_user(sender, instance=None, **kwargs):
     """
     Deletes an existing user on Auth0.
     """
-    url = '{0}/users/{1}'.format(BASE_URL, instance.identifier)
+    url = '{0}/users/{1}'.format(BASE_URL, instance.auth0_id)
     response = requests.delete(url=url, auth=Auth0Auth())
 
     if response.status_code != HTTP_204_NO_CONTENT:
