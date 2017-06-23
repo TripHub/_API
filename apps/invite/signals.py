@@ -1,7 +1,10 @@
 from django.core.mail import send_mail
 
 
-def send_invitation(sender, instance=None, **kwargs):
+def send_invitation(sender, created, instance=None, **kwargs):
+    if not created:
+        # we only want to send an email when the invitation is first created
+        return
     send_mail(
         # Subject
         'Invitation to join {0}'.format(instance.trip.title),
