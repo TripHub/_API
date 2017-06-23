@@ -2,13 +2,13 @@ from rest_framework import serializers
 
 from common.rest_framework.serializers.abstract import PublicIdBaseSerializer
 from apps.destination.serializers import DestinationSerializerSimple
-from apps.user.serializers import UserSerializerSimple
+from apps.user.serializers import UserSerializer, UserSerializerSimple
 
 from .models import Trip
 
 
 class TripSerializer(PublicIdBaseSerializer):
-    owner = serializers.CharField(source='owner.uid')
+    owner = UserSerializer()
     members = UserSerializerSimple(many=True)
     destinations = DestinationSerializerSimple(
         source='get_destinations', many=True)
@@ -19,7 +19,7 @@ class TripSerializer(PublicIdBaseSerializer):
 
 
 class TripSerializerSimple(PublicIdBaseSerializer):
-    owner = serializers.CharField(source='owner.uid')
+    owner = UserSerializerSimple()
     member_count = serializers.SerializerMethodField()
 
     def get_member_count(self, obj):

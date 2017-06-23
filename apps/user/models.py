@@ -5,26 +5,26 @@ from django.contrib.auth.models import AbstractBaseUser, BaseUserManager
 
 from common.models.abstract import TimeStampedModel, PublicIdModel
 
-from .signals import create_auth0_user, delete_auth0_user
+from .signals import get_user_email, delete_auth0_user
 
 
 class UserManager(BaseUserManager):
-    def create_user(self, identifier):
-        if not identifier:
-            raise ValueError('Users must have an identifier')
+    def create_user(self, auth0_id):
+        if not auth0_id:
+            raise ValueError('Users must have an auth0_id')
         user = User.objects.create(
-            identifier=identifier)
+            auth0_id=auth0_id)
         user.set_unusable_password()
         user.save(using=self._db)
         return user
 
-    def create_superuser(self, identifier, password, email=''):
-        if not identifier:
-            raise ValueError('Users must have an identifier')
+    def create_superuser(self, auth0_id, password, email=''):
+        if not auth0_id:
+            raise ValueError('Users must have an auth0_id')
         if User.objects.filter(email=email).exists():
             raise ValidationError('User with email already exists')
         user = User.objects.create(
-            identifier=identifier, email=email)
+            auth0_id=auth0_id, email=email)
         user.is_superuser = True
         user.is_staff = True
         user.set_password(password)
@@ -33,7 +33,7 @@ class UserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
-    identifier = models.CharField(max_length=128, unique=True, editable=False)
+    auth0_id = models.CharField(max_length=128, unique=True, editable=False)
     email = models.EmailField(unique=True)
     is_superuser = models.BooleanField(default=False)
     is_staff = models.BooleanField(default=False)
@@ -41,15 +41,15 @@ class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
 
     objects = UserManager()
 
-    USERNAME_FIELD = 'identifier'
+    USERNAME_FIELD = 'auth0_id'
     EMAIL_FIELD = 'email'
     REQUIRED_FIELDS = ['email']
 
     def get_full_name(self):
-        return self.email or self.identifier
+        return self.email or self.auth0_id
 
     def get_short_name(self):
-        return self.email or self.identifier
+        return self.email or self.auth0_id
 
     def has_perm(self, perm, obj=None):
         return True
@@ -63,8 +63,8 @@ class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
         super().save(*args, **kwargs)
 
     def __str__(self):
-        return self.email or self.identifier
+        return self.email or self.auth0_id
 
 # match Django user's with Auth0 users
-pre_save.connect(create_auth0_user, sender=User)
+pre_save.connect(get_user_email, sender=User)
 post_delete.connect(delete_auth0_user, sender=User)

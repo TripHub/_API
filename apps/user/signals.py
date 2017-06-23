@@ -2,11 +2,13 @@ import requests
 
 from django.conf import settings
 
-from rest_framework.status import HTTP_201_CREATED, HTTP_204_NO_CONTENT
+from rest_framework.status import HTTP_200_OK, HTTP_201_CREATED, \
+    HTTP_204_NO_CONTENT
 from utils.auth0 import Auth0Auth
 
 
 BASE_URL = url = 'https://{0}/api/v2'.format(getattr(settings, 'AUTH0_DOMAIN'))
+
 
 def create_auth0_user(sender, instance=None, **kwargs):
     """
@@ -25,6 +27,19 @@ def create_auth0_user(sender, instance=None, **kwargs):
     instance.identifier = user_id
 
 
+def get_user_email(sender, instance=None, **kwargs):
+    """
+    Supplements the instance with email from Auth0.
+    """
+    url = '{0}/users/{1}'.format(BASE_URL, instance.identifier)
+    response = requests.get(url=url, auth=Auth0Auth())
+    if response.status_code != HTTP_200_OK:
+        raise Exception('Error finding user on Auth0.')
+
+    email = response.json().get('email')
+    instance.email = email
+
+
 def delete_auth0_user(sender, instance=None, **kwargs):
     """
     Deletes an existing user on Auth0.
@@ -33,4 +48,5 @@ def delete_auth0_user(sender, instance=None, **kwargs):
     response = requests.delete(url=url, auth=Auth0Auth())
 
     if response.status_code != HTTP_204_NO_CONTENT:
-        raise Exception('Error deleting user on Auth0.')
+        # silently fail
+        pass

@@ -1,9 +1,9 @@
 from django.contrib.auth import get_user_model
 from django.conf import settings
 
+from jose import jwt
 from rest_framework import authentication
 from rest_framework import exceptions
-from jose import jwt
 
 from utils.authentication.jwt import validate_access_token
 
@@ -23,15 +23,16 @@ class Auth0Authentication(authentication.BaseAuthentication):
                 web_key_url=web_key_url,
                 audience=settings.AUTH0_API_AUDIENCE,
                 issuer=issuer)
-            # get the user identifier from the token and get the associated
+            # get the user auth0_id from the token and get the associated
             # user object.
             sub = payload.get('sub')
-            user = get_user_model().objects.get(identifier=sub)
+            user = get_user_model().objects.get(auth0_id=sub)
         except jwt.JWTError as e:
             raise exceptions.AuthenticationFailed(e.__str__())
         except get_user_model().DoesNotExist:
-            # create a new user
-            new_user = get_user_model().objects.create(identifier=sub)
+            # we have a user that has been created on Auth0 but is not stored
+            # on our db, so we create it
+            new_user = get_user_model().objects.create(auth0_id=sub)
             return new_user, None
 
         return user, None
