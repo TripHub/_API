@@ -31,6 +31,8 @@ def get_user_email(sender, instance=None, **kwargs):
     """
     Supplements the instance with email from Auth0.
     """
+    if instance.email:
+        return
     url = '{0}/users/{1}'.format(BASE_URL, instance.auth0_id)
     response = requests.get(url=url, auth=Auth0Auth())
     if response.status_code != HTTP_200_OK:
