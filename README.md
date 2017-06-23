@@ -2,12 +2,14 @@
 
 [![Build Status](https://travis-ci.org/TripHub/API.svg?branch=master)](https://travis-ci.org/TripHub/API)
 
-🛠 *This project is in the early stages of development*
+🛠 *This project is in the early stages of development.*
+
+⏳ *This app uses a free [Heroku](https://www.heroku.com/) server and so initial load can take a while.*
 
 **Welcome to TripHub, a unified place for groups to organise trips!**
 
 This repo is for the TripHub API server.
-The frontend code can be found [here](https://github.com/benjaminhadfield/TripHub).
+The frontend app can be found [here](https://github.com/TripHub/App).
 
 The API documentation can be found on [GitBook](https://triphub.gitbooks.io/api/) 📘
 
