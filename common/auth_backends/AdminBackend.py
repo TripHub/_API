@@ -4,7 +4,7 @@ from django.contrib.auth import get_user_model
 class AdminEmailBackend:
     def authenticate(self, request, username=None, password=None):
         try:
-            user = get_user_model().objects.get(email=username)
+            user = get_user_model().objects.get(email=username.lower().strip())
             if user.check_password(password):
                 return user
         except get_user_model().DoesNotExist:
