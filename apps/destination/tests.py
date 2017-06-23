@@ -1,23 +1,26 @@
 from django.urls import reverse
+from django.db.models import signals
 
 from rest_framework import status
-from rest_framework.test import APITestCase, APIRequestFactory, \
-    APIClient
+from rest_framework.test import APITestCase, APIClient
 
 from apps.user.models import User
 from apps.trip.models import Trip
 from apps.destination.models import Destination
+from apps.user.signals import get_user_email
 
 
 class DestinationTest(APITestCase):
     def setUp(self):
+        # prevent attempting to get test users from Auth0
+        signals.pre_save.disconnect(sender=User)
         self.client = APIClient()
         self.user_1 = User.objects.create(
-            auth0_id='test0|testtesttesttesttesttest')
+            auth0_id='test0|testtesttesttesttesttest', email='1@t.com')
         self.user_1_trip = Trip.objects.create(
             title='user1 trip', owner=self.user_1)
         self.user_2 = User.objects.create(
-            auth0_id='test1|testtesttesttesttesttest')
+            auth0_id='test1|testtesttesttesttesttest', email='2@t.com')
         self.user_2_trip = Trip.objects.create(
             title='user2 trip', owner=self.user_2)
 
