@@ -13,11 +13,11 @@ class DestinationTest(APITestCase):
     def setUp(self):
         self.client = APIClient()
         self.user_1 = User.objects.create(
-            identifier='test0|testtesttesttesttesttest')
+            auth0_id='test0|testtesttesttesttesttest')
         self.user_1_trip = Trip.objects.create(
             title='user1 trip', owner=self.user_1)
         self.user_2 = User.objects.create(
-            identifier='test1|testtesttesttesttesttest')
+            auth0_id='test1|testtesttesttesttesttest')
         self.user_2_trip = Trip.objects.create(
             title='user2 trip', owner=self.user_2)
 

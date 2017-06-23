@@ -15,13 +15,13 @@ class InviteTests(APITestCase):
     def setUp(self):
         self.client = APIClient()
         self.user_1 = User.objects.create(
-            identifier='test0|testtesttesttesttesttest', email='foo@test.com')
+            auth0_id='test0|testtesttesttesttesttest', email='foo@test.com')
         self.user_1_trip = Trip.objects.create(
             title='user1 trip', owner=self.user_1)
         self.user_2 = User.objects.create(
-            identifier='test1|testtesttesttesttesttest', email='bar@test.com')
+            auth0_id='test1|testtesttesttesttesttest', email='bar@test.com')
         self.user_3 = User.objects.create(
-            identifier='test2|testtesttesttesttesttest', email='baz@test.com')
+            auth0_id='test2|testtesttesttesttesttest', email='baz@test.com')
 
     def test_invite_status_defaults_to_pending(self):
         invite = Invite.objects.create(
