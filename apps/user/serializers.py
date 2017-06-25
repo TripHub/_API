@@ -10,14 +10,4 @@ class UserSerializer(PublicIdBaseSerializer):
             'id',
             'auth0_id',
             'email',
-            'last_login',
-        )
-
-
-class UserSerializerSimple(PublicIdBaseSerializer):
-    class Meta:
-        model = User
-        fields = (
-            'id',
-            'auth0_id',
         )

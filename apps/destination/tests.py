@@ -7,7 +7,6 @@ from rest_framework.test import APITestCase, APIClient
 from apps.user.models import User
 from apps.trip.models import Trip
 from apps.destination.models import Destination
-from apps.user.signals import get_user_email
 
 
 class DestinationTest(APITestCase):
