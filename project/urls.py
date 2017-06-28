@@ -25,7 +25,7 @@ from apps.destination.views import DestinationViewSet
 from apps.invite.views import InviteViewSet, InvitePublicViewSet
 
 
-router = routers.SimpleRouter()
+router = routers.DefaultRouter()
 router.register(r'user', UserViewSet, base_name='user')
 router.register(r'trip', TripViewSet, base_name='trip')
 router.register(r'destination', DestinationViewSet, base_name='destination')
