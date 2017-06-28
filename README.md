@@ -1,6 +1,7 @@
 # [<img width="312" alt="TripHub API logo" src="https://cdn.rawgit.com/TripHub/API/83b27d80/images/logo.svg" />](https://github.com/TripHub/API)
 
 [![Build Status](https://travis-ci.org/TripHub/API.svg?branch=master)](https://travis-ci.org/TripHub/API)
+[![Docs](https://img.shields.io/badge/docs-GitBooks-brightgreen.svg)](https://triphub.gitbooks.io/api/)
 
 🛠 *This project is in the early stages of development.*
 
