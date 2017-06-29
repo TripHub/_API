@@ -52,9 +52,11 @@ class TripViewSet(viewsets.ModelViewSet):
 
     @detail_route(methods=['POST'])
     def invite(self, request, uid=None):
+        # from user input so be cautious
         email = request.data.get('email').lower().strip()
         if not email:
             raise ValidationError({'email': 'No email provided.'})
+
         trip = get_object_or_404(self.get_queryset(), uid=uid)
         user_previously_invited = Invite.objects.filter(
             trip=trip, email=email).exists()
@@ -62,5 +64,6 @@ class TripViewSet(viewsets.ModelViewSet):
             raise ValidationError(
                 '{0} has already been invited to {1}.'.format(
                     email, trip.title))
+
         _ = Invite.objects.create(trip=trip, email=email)
         return Response(status=status.HTTP_204_NO_CONTENT)
