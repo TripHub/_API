@@ -41,35 +41,26 @@ class TripViewSet(viewsets.ModelViewSet):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def destroy(self, request, *args, **kwargs):
-        try:
-            # check trip exists
-            trip_to_delete = self.get_queryset().get(
-                uid=kwargs.get('uid'))
-            # only delete if the user is the owner
-            if trip_to_delete.owner == self.request.user:
-                # is owner: delete
-                return super().destroy(request, *args, **kwargs)
-            else:
-                # not owner: forbidden
-                return Response(status=status.HTTP_403_FORBIDDEN)
-        except Trip.DoesNotExist:
-            # trip is not in the user's scope: not found
-            return Response(status=status.HTTP_404_NOT_FOUND)
+        trip_to_delete = get_object_or_404(
+            self.get_queryset(), uid=kwargs.get('uid'))
+        # only delete if the user is the owner
+        if trip_to_delete.owner == self.request.user:
+            # is owner: delete
+            return super().destroy(request, *args, **kwargs)
+
+        return Response(status=status.HTTP_403_FORBIDDEN)
 
     @detail_route(methods=['POST'])
     def invite(self, request, uid=None):
         email = request.data.get('email').lower().strip()
         if not email:
-            raise ValidationError({'email': 'Not provided.'})
-        try:
-            trip = Trip.objects.get(uid=uid)
-            user_previously_invited = Invite.objects.filter(
-                trip=trip, email=email).exists()
-            if user_previously_invited:
-                raise ValidationError(
-                    '{0} has already been invited to {1}.'.format(
-                        email, trip.title))
-            _ = Invite.objects.create(trip=trip, email=email)
-            return Response(status=status.HTTP_204_NO_CONTENT)
-        except Trip.DoesNotExist:
-            raise NotFound('Trip \'{0}\' does not exist.'.format(uid))
+            raise ValidationError({'email': 'No email provided.'})
+        trip = get_object_or_404(self.get_queryset(), uid=uid)
+        user_previously_invited = Invite.objects.filter(
+            trip=trip, email=email).exists()
+        if user_previously_invited:
+            raise ValidationError(
+                '{0} has already been invited to {1}.'.format(
+                    email, trip.title))
+        _ = Invite.objects.create(trip=trip, email=email)
+        return Response(status=status.HTTP_204_NO_CONTENT)
