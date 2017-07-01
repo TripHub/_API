@@ -9,9 +9,9 @@ class Destination(TimeStampedModel, PublicIdModel):
     title = models.CharField(max_length=255)
     google_place_id = models.CharField(max_length=255, blank=Trip)
     latitude = models.DecimalField(
-        max_digits=9, decimal_places=9, blank=True, null=True)
+        max_digits=12, decimal_places=9, blank=True, null=True)
     longitude = models.DecimalField(
-        max_digits=9, decimal_places=9, blank=True, null=True)
+        max_digits=12, decimal_places=9, blank=True, null=True)
     arrival_time = models.DateTimeField(null=True, blank=True)
     depart_time = models.DateTimeField(null=True, blank=True)
 
