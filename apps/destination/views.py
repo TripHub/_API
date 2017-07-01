@@ -1,4 +1,5 @@
 from django.db.models import Q
+from django.shortcuts import get_object_or_404
 
 from rest_framework import viewsets
 from rest_framework.response import Response
@@ -37,21 +38,18 @@ class DestinationViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         """Check the trip is owned by requesting user, then pass to super."""
         trip_uid = request.data.get('trip')
+
         if not trip_uid:
             raise ValidationError({'trip': 'No trip provided.'})
-        try:
-            # check that the trip is in user's scope
-            trip = self.get_trip_queryset().get(uid=trip_uid)
-            # check the user owns the trip
-            if trip.owner != request.user:
-                raise PermissionDenied(
-                    'Only the trip owner can add destinations.')
-            return super().create(request, *args, **kwargs)
 
-        except Trip.DoesNotExist:
-            # if trip not in user's scope, return 404
-            raise NotFound(
-                'Trip {0} does not exist.'.format(request.data.get('trip')))
+        # check that the trip is in user's scope
+        trip = get_object_or_404(self.get_trip_queryset(), uid=trip_uid)
+        # check the user owns the trip
+        if trip.owner != request.user:
+            raise PermissionDenied(
+                'Only the trip owner can add destinations.')
+
+        return super().create(request, *args, **kwargs)
 
     @list_route(methods=['POST'])
     def order(self, request):
