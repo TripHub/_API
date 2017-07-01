@@ -159,6 +159,11 @@ AUTH0_API_CLIENT_ID = os.environ.get('AUTH0_API_CLIENT_ID')
 AUTH0_API_CLIENT_SECRET = os.environ.get('AUTH0_API_CLIENT_SECRET')
 
 
+# Google API Key
+
+GOOGLE_API_KEY = os.environ.get('GOOGLE_API_KEY')
+
+
 # REST Framework
 
 # Use Django's standard `django.contrib.auth` permissions,
@@ -180,8 +185,8 @@ REST_FRAMEWORK = {
         'rest_framework.throttling.UserRateThrottle'
     ),
     'DEFAULT_THROTTLE_RATES': {
-        'anon': '4/second',
-        'user': '16/second'
+        'anon': '5/second',
+        'user': '30/second'
     },
 
     # pagination
