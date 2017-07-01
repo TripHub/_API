@@ -6,8 +6,8 @@ from apps.trip.models import Trip
 
 class Destination(TimeStampedModel, PublicIdModel):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255)
-    google_place_id = models.CharField(max_length=255, blank=Trip)
+    title = models.CharField(max_length=255, blank=True)
+    google_place_id = models.CharField(max_length=255, blank=True)
     latitude = models.DecimalField(
         max_digits=12, decimal_places=9, blank=True, null=True)
     longitude = models.DecimalField(
