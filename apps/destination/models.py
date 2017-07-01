@@ -6,7 +6,7 @@ from apps.trip.models import Trip
 
 class Destination(TimeStampedModel, PublicIdModel):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
-    title = models.CharField(max_length=255, blank=True)
+    address = models.CharField(max_length=255, blank=True)
     google_place_id = models.CharField(max_length=255, blank=True)
     latitude = models.DecimalField(
         max_digits=12, decimal_places=9, blank=True, null=True)
@@ -20,4 +20,4 @@ class Destination(TimeStampedModel, PublicIdModel):
         order_with_respect_to = 'trip'
 
     def __str__(self):
-        return self.title
+        return self.address
