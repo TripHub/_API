@@ -36,8 +36,8 @@ class TripViewSet(viewsets.ModelViewSet):
         title = request.data.get('title')
         if not title:
             title = 'Untitled Trip'
-        trip = Trip.objects.create(owner=self.request.user, title=title)
-        serializer = TripSerializerSimple(trip)
+        trip = Trip.objects.create(owner=self.request.user, **request.data)
+        serializer = self.get_serializer(trip)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
     def destroy(self, request, *args, **kwargs):
