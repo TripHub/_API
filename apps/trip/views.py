@@ -34,9 +34,16 @@ class TripViewSet(viewsets.ModelViewSet):
     def create(self, request, *args, **kwargs):
         """Creates a trip, setting the owner as the requester."""
         title = request.data.get('title')
+        tag_line = request.data.get('tag_line')
         if not title:
             title = 'Untitled Trip'
-        trip = Trip.objects.create(owner=self.request.user, **request.data)
+            
+        trip = Trip.objects.create(
+            owner=self.request.user,
+            title=title,
+            tag_line=tag_line,
+        )
+
         serializer = self.get_serializer(trip)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
