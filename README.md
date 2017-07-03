@@ -3,9 +3,9 @@
 [![Build Status](https://travis-ci.org/TripHub/API.svg?branch=master)](https://travis-ci.org/TripHub/API)
 [![Docs](https://img.shields.io/badge/docs-GitBooks-brightgreen.svg)](https://triphub.gitbooks.io/api/)
 
-🛠 *This project is in the early stages of development.*
+> 🛠 *This project is in the early stages of development.*
 
-⏳ *This app uses a [free Heroku server](https://www.heroku.com/free) and so the initial load can take a while.*
+> ⏳ *This app uses a [free Heroku server](https://www.heroku.com/free) and so the initial load can take a while.*
 
 **Welcome to TripHub, a unified place for groups to organise trips!**
 
