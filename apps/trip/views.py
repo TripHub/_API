@@ -37,7 +37,7 @@ class TripViewSet(viewsets.ModelViewSet):
         tag_line = request.data.get('tag_line')
         if not title:
             title = 'Untitled Trip'
-            
+
         trip = Trip.objects.create(
             owner=self.request.user,
             title=title,

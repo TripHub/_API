@@ -17,11 +17,11 @@ class DestinationTest(APITestCase):
         self.user_1 = User.objects.create(
             auth0_id='test0|testtesttesttesttesttest', email='1@t.com')
         self.user_1_trip = Trip.objects.create(
-            address='user1 trip', owner=self.user_1)
+            title='user1 trip', owner=self.user_1)
         self.user_2 = User.objects.create(
             auth0_id='test1|testtesttesttesttesttest', email='2@t.com')
         self.user_2_trip = Trip.objects.create(
-            address='user2 trip', owner=self.user_2)
+            title='user2 trip', owner=self.user_2)
 
     def test_get_destinations_returns_ok(self):
         """We should get HTTP 200."""
