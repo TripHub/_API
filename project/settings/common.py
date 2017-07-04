@@ -21,6 +21,11 @@ BASE_DIR = os.path.dirname(
 DEBUG = False
 
 
+# SECURITY WARNING: keep the secret key used in production secret!
+
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+
+
 # Convert comma delimited string of allowed hosts to Python list
 
 ALLOWED_HOSTS = [

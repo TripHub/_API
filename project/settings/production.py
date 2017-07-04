@@ -6,11 +6,6 @@ from .common import *
 INSTALLED_APPS += ['gunicorn', 'raven.contrib.django.raven_compat']
 
 
-# SECURITY WARNING: keep the secret key used in production secret!
-
-SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
-
-
 # This ensures that Django will be able to detect a secure connection
 # properly on Heroku.
 
