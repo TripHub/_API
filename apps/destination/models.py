@@ -5,13 +5,21 @@ from apps.trip.models import Trip
 
 
 class Destination(TimeStampedModel, PublicIdModel):
+    """
+    Destinations are the building blocks of trips. They represent a distinct
+    place of interest.
+    """
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
-    address = models.CharField(max_length=255, blank=True)
     google_place_id = models.CharField(max_length=255, blank=True)
+
+    # the address and lat/lng are stored in the DB to avoid making
+    # further requests for common info
+    address = models.CharField(max_length=255, blank=True)
     latitude = models.DecimalField(
         max_digits=12, decimal_places=9, blank=True, null=True)
     longitude = models.DecimalField(
         max_digits=12, decimal_places=9, blank=True, null=True)
+
     arrival_time = models.DateTimeField(null=True, blank=True)
     depart_time = models.DateTimeField(null=True, blank=True)
 
