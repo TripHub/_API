@@ -9,7 +9,7 @@ from .constants import TYPE_CHOICES, MAIN
 class Destination(TimeStampedModel, PublicIdModel):
     """
     Destinations are the building blocks of trips. They represent a distinct
-    place of interest.
+    place of interest (e.g. airport, local attraction, etc...).
     """
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
     google_place_id = models.CharField(max_length=255, blank=True)
