@@ -3,6 +3,8 @@ from django.db import models
 from common.models.abstract import TimeStampedModel, PublicIdModel
 from apps.trip.models import Trip
 
+from .constants import TYPE_CHOICES, MAIN
+
 
 class Destination(TimeStampedModel, PublicIdModel):
     """
@@ -22,6 +24,9 @@ class Destination(TimeStampedModel, PublicIdModel):
 
     arrival_time = models.DateTimeField(null=True, blank=True)
     depart_time = models.DateTimeField(null=True, blank=True)
+
+    type = models.CharField(max_length=4, choices=TYPE_CHOICES, default=MAIN)
+    related = models.ForeignKey('self', blank=True, null=True)
 
     class Meta:
         # gives us get_next_in_order() and get_previous_in_order() methods
