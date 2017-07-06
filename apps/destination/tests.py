@@ -8,10 +8,12 @@ from apps.user.models import User
 from apps.trip.models import Trip
 from apps.destination.models import Destination
 
+from .constants import MAIN
+
 
 class DestinationTest(APITestCase):
     def setUp(self):
-        # prevent attempting to get test users from Auth0
+        # prevent attempting to retrieve test users from Auth0
         signals.pre_save.disconnect(sender=User)
         self.client = APIClient()
         self.user_1 = User.objects.create(
@@ -23,7 +25,13 @@ class DestinationTest(APITestCase):
         self.user_2_trip = Trip.objects.create(
             title='user2 trip', owner=self.user_2)
 
-    def test_get_destinations_returns_ok(self):
+    def test_correct_defaults_are_set_on_create(self):
+        result = Destination.objects.create(
+            trip=self.user_1_trip,)
+        # we expect result.type to default to MAIN
+        self.assertEqual(result.type, MAIN)
+
+    def test_list_destinations_endpoint_returns_ok(self):
         """We should get HTTP 200."""
         self.client.force_authenticate(user=self.user_1)
         response = self.client.get(reverse('destination-list'))
