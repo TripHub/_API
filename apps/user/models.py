@@ -66,5 +66,5 @@ class User(AbstractBaseUser, TimeStampedModel, PublicIdModel):
         return self.email or self.auth0_id
 
 # match Django user's with Auth0 users
-pre_save.connect(get_user_email, sender=User)
-post_delete.connect(delete_auth0_user, sender=User)
+pre_save.connect(receiver=get_user_email, sender=User)
+post_delete.connect(receiver=delete_auth0_user, sender=User)

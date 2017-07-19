@@ -4,6 +4,6 @@ from .models import Destination
 
 
 class DestinationAdmin(admin.ModelAdmin):
-    list_display = ('address', 'trip', 'uid',)
+    list_display = ('trip', 'uid',)
 
 admin.site.register(Destination, DestinationAdmin)
