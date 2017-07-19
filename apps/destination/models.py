@@ -19,7 +19,8 @@ class Destination(TimeStampedModel, PublicIdModel):
     """
     Store a copy of Google place data for the location. this avoids redundant
     requests to Google's API.
-    This is the preferred way to store Destination information
+    
+    This is the preferred way to store Destination information.
     """
     google_place_id = models.CharField(max_length=255, blank=True)
     google_place_data = JSONField(blank=True, null=True)

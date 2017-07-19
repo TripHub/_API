@@ -19,4 +19,4 @@ class DestinationSerializer(PublicIdBaseSerializer):
 class DestinationSerializerSimple(PublicIdBaseSerializer):
     class Meta:
         model = Destination
-        fields = ('id', 'address', 'latitude', 'longitude', '_order',)
+        fields = ('id', 'google_place_id', 'address', 'lat', 'lng', '_order',)
