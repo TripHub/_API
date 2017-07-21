@@ -14,9 +14,3 @@ class DestinationSerializer(PublicIdBaseSerializer):
     class Meta:
         model = Destination
         exclude = ('uid',)
-
-
-class DestinationSerializerSimple(PublicIdBaseSerializer):
-    class Meta:
-        model = Destination
-        fields = ('id', 'google_place_id', 'address', 'lat', 'lng', '_order',)

@@ -1,5 +1,5 @@
 from common.rest_framework.serializers.abstract import PublicIdBaseSerializer
-from apps.destination.serializers import DestinationSerializerSimple
+from apps.destination.serializers import DestinationSerializer
 from apps.user.serializers import UserSerializer
 
 from .models import Trip
@@ -8,7 +8,7 @@ from .models import Trip
 class TripSerializer(PublicIdBaseSerializer):
     owner = UserSerializer()
     members = UserSerializer(many=True)
-    destinations = DestinationSerializerSimple(
+    destinations = DestinationSerializer(
         source='get_destinations', many=True)
 
     class Meta:
