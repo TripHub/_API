@@ -10,7 +10,10 @@ def get_place_details_from_google(sender, instance=None, **kwargs):
     This calls the Google API and supplements the passed Destination instance
     with the data returned from Google.
     """
-    if instance.pk:
+    if instance.pk:  # do nothing if already saved to DB
+        return
+
+    if instance.google_place_id is None:  # do nothing if no Google Place ID
         return
 
     url_to_call = 'https://maps.googleapis.com/maps/api/place/details/json'
