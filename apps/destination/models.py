@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 from django.db.models.signals import pre_save
 
 from common.models.abstract import TimeStampedModel, PublicIdModel
@@ -17,17 +16,19 @@ class Destination(TimeStampedModel, PublicIdModel):
     trip = models.ForeignKey(Trip, on_delete=models.CASCADE)
 
     """
-    Store a copy of Google place data for the location. this avoids redundant
-    requests to Google's API.
+    Store the Google's Place ID to flag that Google data can be retrieved for
+    this destination.
     
     This is the preferred way to store Destination information.
     """
     google_place_id = models.CharField(max_length=255, blank=True)
-    google_place_data = JSONField(blank=True, null=True)
 
     """
     We will also store location and address information for custom
     destinations that do not have Google place data.
+    
+    Destinations with Google data will also populate these fields to prevent
+    calling Google's API for really basic info.
     """
     address = models.CharField(max_length=255, blank=True)
     lat = models.DecimalField(

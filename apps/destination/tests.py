@@ -41,15 +41,19 @@ class DestinationTest(APITestCase):
         """Only dest_1 should be returned."""
         dest_1 = Destination.objects.create(
             address='', trip=self.user_1_trip)
-        dest_2 = Destination.objects.create(
+        _ = Destination.objects.create(
             address='', trip=self.user_2_trip)
+        # Login as user_1
         self.client.force_authenticate(user=self.user_1)
         response = self.client.get(reverse('destination-list'))
+
         count = response.data.get('count')
         results = response.data.get('results')
+
         # one result should be returned
         self.assertEqual(count, 1)
         self.assertEqual(len(results), 1)
+
         # dest_1 should be in results
         self.assertEqual(results[0].get('id'), dest_1.uid)
 
