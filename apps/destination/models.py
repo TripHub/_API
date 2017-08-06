@@ -1,5 +1,4 @@
 from django.db import models
-from django.contrib.postgres.fields import JSONField
 from django.db.models.signals import pre_save
 
 from common.models.abstract import TimeStampedModel, PublicIdModel
@@ -23,7 +22,6 @@ class Destination(TimeStampedModel, PublicIdModel):
     This is the preferred way to store Destination information.
     """
     google_place_id = models.CharField(max_length=255, blank=True)
-    # google_place_data = JSONField(blank=True, null=True)
 
     """
     We will also store location and address information for custom
