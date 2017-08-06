@@ -66,7 +66,9 @@ class DestinationViewSet(viewsets.ModelViewSet):
                 raise ValueError()
             # convert the list of UIDs to IDs
             dest_id_order = list(map(
-                lambda uid: Destination.objects.get(uid=uid).id, dest_uid_order))
+                lambda uid: Destination.objects.get(uid=uid).id,
+                dest_uid_order,
+            ))
             # set the new order of destination objects
             trip.set_destination_order(dest_id_order)
             serializer = TripSerializer(trip)

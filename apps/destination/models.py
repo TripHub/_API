@@ -55,7 +55,8 @@ class Destination(TimeStampedModel, PublicIdModel):
     Extra Destination category info.
     """
     type = models.CharField(max_length=4, choices=TYPE_CHOICES, default=MAIN)
-    related = models.ForeignKey('self', blank=True, null=True)
+    related = models.ForeignKey(
+        'self', on_delete=models.CASCADE, blank=True, null=True)
 
     class Meta:
         # gives get_next_in_order() and get_previous_in_order() methods
