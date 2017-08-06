@@ -49,7 +49,6 @@ class DestinationTest(APITestCase):
 
         count = response.data.get('count')
         results = response.data.get('results')
-        print('RESULTS', results, count, response)
 
         # one result should be returned
         self.assertEqual(count, 1)
